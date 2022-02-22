@@ -1,0 +1,5 @@
+#!/bin/bash
+#convert the ./shared folder to an ISO.
+#supposed to be used for transferring files from host to ancient VMs
+
+mkisofs -o shared.iso ./shared

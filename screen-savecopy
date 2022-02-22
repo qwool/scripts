@@ -1,0 +1,6 @@
+#!/bin/bash
+#author: qwool. 21.02.2022
+#uses gnome-screenshot to screenshot and saves it with adequate naming
+
+name="Pictures/Screenshots/ss-$(date +%d:%m:%y-%H:%M)" 
+gnome-screenshot -ac -f $name.jpg

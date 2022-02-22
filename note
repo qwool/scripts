@@ -1,0 +1,28 @@
+#!/bin/bash
+#author: qwool, 02/01/2022
+
+#use -r to fully display your notefile
+#use -l to only display th first 5 lines
+#use -e to open it with your $EDITOR
+#use -h if you need help because you are a fucking pussy
+
+# printf "$(date +%d/%m/%y@%H:%M): $*\n"  >> ~/notes
+notefile="$HOME/notes"
+while getopts 'rleh' flag; do
+  case "${flag}" in
+    r) cat $notefile; exit ;;
+    l) head -5 $notefile; exit ;;
+    e) $EDITOR $notefile; exit ;;
+    h) head -5 $0; exit ;;
+  esac
+done
+if [ "$*" == "" ]
+then
+	printf "note: "
+	read
+	text=$REPLY
+else
+	text=$*
+fi
+text=$(printf "$(date +%d/%m/%y@%H:%M): $text\n")
+printf "$(echo $text; cat $notefile)" > $notefile

@@ -1,0 +1,4 @@
+#!/bin/bash
+aaa="alias "$1'="'$2'"'
+echo $aaa
+eval "$aaa"

@@ -1,0 +1,63 @@
+#!/bin/bash
+#author: qwool, somewhere in november 2021
+
+# a system fetch scrypt. pretty good, although it doesnt display any art in the terminal.
+# uses external commands that should be packaged with any distro released in the past 20 years anyway.
+# it's in russian, so it looks shit in terminals without unicode support (if you're ancient enough to use one)
+
+#функции
+has() {
+    _cmd=$(command -v "$1") 2>/dev/null || return 1
+    [ -x "$_cmd" ] || return 1
+}
+get_pkgs() {
+                has bonsai     && bonsai list
+                has crux       && pkginfo -i
+                has pacman-key && pacman -Qq
+                has dpkg       && dpkg-query -f '.\n' -W
+                has rpm        && rpm -qa
+                has xbps-query && xbps-query -l
+                has apk        && apk info
+                has guix       && guix package --list-installed
+                has opkg       && opkg list-installed
+}
+
+#цвета
+title="$(tput bold)$(tput setaf 2)"
+normal="$(tput sgr0)"
+
+#сама инфа
+ram=$(
+	free -m |
+	awk '/^Mem/ {print $3"M/"$2"M"}'
+)
+space=$(
+	df -h 2>/dev/null |
+	awk '$6 == "/" {print $4 "/" $2}'
+)
+upt=$(
+	echo $(echo $(uptime -p) |
+	cut -c 4-)
+)
+distro=$( lsb_release -ds )
+kernel=$( uname -r )
+pkgs=$(
+	get_pkgs |
+	wc -l
+)
+cpu=$(
+	cat /proc/cpuinfo |
+	grep 'model name' |
+	head -1 | cut -c 14-
+)
+
+#текст
+echo -e $(tput bold)"qq," $(whoami)"@"$(hostname)!
+echo -e "$titleос:              $normal"$distro
+echo -e "$titleядро:            $normal"$kernel
+echo -e "$titleпакеты:          $normal"$pkgs
+echo -e "$titleозу:             $normal"$ram
+echo -e "$titleцпу:             $normal"$cpu
+
+echo -e "$titleсвободное место: $normal"$space
+echo -e "$titleвремя с запуска: $normal"$upt

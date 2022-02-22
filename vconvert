@@ -1,0 +1,7 @@
+#!/bin/bash
+#author: qwool, somewhere in january 2021
+
+#turns preallocation off for a virtual qcow2 drive, saves a lot of space.
+#usage: vconvert *source* *destination*
+
+qemu-img convert -f qcow2 -O qcow2 -o preallocation=off $1 $2

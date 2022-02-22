@@ -1,0 +1,14 @@
+#!/bin/bash
+#author: qwool, 21.02.2022
+
+#usage:
+# py-server - serves a server on 127.0.0.1:9000 (default)
+# py-server 8080 - creates a server on a cutom port (127.0.0.1:9000)
+
+if [[ $1 == "" ]]; then
+  echo "hosting on port 9000"
+  python3 -m http.server --bind 127.0.0.1 9000
+else
+  echo "hosting on port $1"
+  python3 -m http.server --bind 127.0.0.1 $1
+fi

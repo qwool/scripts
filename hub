@@ -1,0 +1,57 @@
+#!/bin/bash
+#author: qwool, 28.12.2021
+
+#usage:
+
+# hub [https link] - clones a repo from http
+# hub [git host] [repository] - clones [repo] from [host]
+# hub c [host] [repo] - clones [repo] from [host]
+# 
+# examples (these all copy the same repo):
+# hub https://github.com/qwool/scripts
+# hub gh qwool/scripts
+# hub c https://github.com qwool/scripts
+
+protocol="https"; # change it to git if you like it more. not implemented yet.
+
+host=$1
+repo=$2
+
+case $host in
+
+  "gh" | "github" | "hub")
+    host="github.com";
+    # echo "$host:$repo ($protocol)";
+    ;;
+
+  "gl" | "gitlab" | "lab" )
+    host="gitlab.com";
+    # echo "$host:$repo ($protocol)";
+    ;;
+  "tea" | "t" | "gitea" )
+    host="gitea.com";
+    # echo "$host:$repo ($protocol)";
+    ;;
+  "c" | "custom" | "git" )
+	host=$2; repo=$3;
+	# echo "custom  @ $host:$repo ($protocol)";
+    ;;
+  *)
+    printf "git clone $*\nis that right? (Y/n) "
+    # read -p '' response
+    # case $response in [yY][eE][sS]|[yY]|[jJ]|'')
+    	git clone $*
+	# esac
+	exit
+    ;;
+esac
+
+IFS=/ read -r left right <<< "$repo"
+cmd="git clone $protocol://$host/$repo"
+# printf "$cmd\nis that right? (Y/n) "
+# read -p '' response
+# case $response in [yY][eE][sS]|[yY]|[jJ]|'')
+		$cmd
+	# exit
+# esac
+
